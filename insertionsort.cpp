@@ -1,5 +1,10 @@
-#include "AttendanceLib.h"
 #include <cstring>
+
+struct AttendanceRecord {
+    char name[100];
+    int id;
+    char timestamp[100];
+};
 
 void addAttendanceRecord(AttendanceRecord* records, int* size, const char* name, int id, const char* timestamp) {
     std::strcpy(records[*size].name, name);
@@ -18,4 +23,9 @@ void insertionSortByName(AttendanceRecord* records, int size) {
         }
         records[j + 1] = key;
     }
+}
+
+int main() {
+    // No predefined data or logic here.
+    return 0;
 }
