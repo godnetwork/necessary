@@ -1,3 +1,5 @@
+#include <iostream>
+#include <fstream>
 #include <cstring>
 
 struct AttendanceRecord {
@@ -25,7 +27,50 @@ void insertionSortByName(AttendanceRecord* records, int size) {
     }
 }
 
+void readAttendanceFromFile(const char* filename, AttendanceRecord* records, int* size) {
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        std::cerr << "Looking for attendance.txt" << filename << '\n';
+        return;
+    }
+
+    char name[100];
+    int id;
+    char timestamp[100];
+
+    while (file >> name >> id >> timestamp) {  // Reads data line by line
+        addAttendanceRecord(records, size, name, id, timestamp);
+    }
+
+    file.close();
+}
+
+void displayRecords(const AttendanceRecord* records, int size) {
+    if (size == 0) {
+        std::cout << "No records to display.\n";
+        return;
+    }
+
+    std::cout << "Attendance Records:\n";
+    for (int i = 0; i < size; i++) {
+        std::cout << records[i].name << ", " << records[i].id << ", " << records[i].timestamp << '\n';
+    }
+}
+
 int main() {
-    // No predefined data or logic here.
+    AttendanceRecord records[100];
+    int size = 0;
+
+    const char* filename = "attendance.txt";  // External file name
+    readAttendanceFromFile(filename, records, &size);
+
+    std::cout << "Before Sorting:\n";
+    displayRecords(records, size);
+
+    insertionSortByName(records, size);
+
+    std::cout << "\nAfter Sorting by Name:\n";
+    displayRecords(records, size);
+
     return 0;
 }
